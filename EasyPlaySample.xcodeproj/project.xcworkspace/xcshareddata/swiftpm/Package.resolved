@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EasyPlay",
+        "repositoryURL": "https://github.com/koher/easy-play.git",
+        "state": {
+          "branch": null,
+          "revision": "dacff8c69a3bd3f978971b36360838ba88fd2e9c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
