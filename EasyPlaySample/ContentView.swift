@@ -49,7 +49,9 @@ struct PlayerView: View {
     
     let player: Player
 
-    @State private var image: UIImage? = nil
+    @State private var image: UIImage?
+    @State private var frameIndex: Int?
+    @State private var time: TimeInterval?
     
     init(isPresented: Binding<Bool>, videoSource: Player.VideoSource) {
         self._isPresented = isPresented
@@ -65,16 +67,28 @@ struct PlayerView: View {
             } else {
                 EmptyView()
             }
-            
-            Button(action: { isPresented = false }, label: {
-                Image(systemName: "xmark.circle")
-            })
-                .padding()
+
+            HStack(spacing: 16) {
+                if let frameIndex = self.frameIndex {
+                    Text("\(frameIndex)")
+                        .font(.system(.body, design: .monospaced))
+                }
+                if let time = self.time {
+                    Text("\(time) [s]")
+                        .font(.system(.body, design: .monospaced))
+                }
+                Button(action: { isPresented = false }, label: {
+                    Image(systemName: "xmark.circle")
+                })
+            }
+            .padding()
         }
         .onAppear {
             player.play { frame in
+                self.frameIndex = frame.index
+                self.time = frame.time
                 var cgImage: CGImage?
-                VTCreateCGImageFromCVPixelBuffer(frame, options: nil, imageOut: &cgImage)
+                VTCreateCGImageFromCVPixelBuffer(frame.pixelBuffer, options: nil, imageOut: &cgImage)
                 if let cgImage = cgImage {
                     self.image = UIImage(cgImage: cgImage)
                 }

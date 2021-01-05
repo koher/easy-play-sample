@@ -5,8 +5,8 @@
         "package": "EasyPlay",
         "repositoryURL": "https://github.com/koher/easy-play.git",
         "state": {
-          "branch": null,
-          "revision": "dacff8c69a3bd3f978971b36360838ba88fd2e9c",
+          "branch": "dev",
+          "revision": "62efa0aaed7ec189de593e66d87abad2733188c3",
           "version": null
         }
       }
