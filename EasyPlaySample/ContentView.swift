@@ -20,13 +20,20 @@ struct ContentView: View {
         .fullScreenCover(item: $videoSource) { videoSource in
             switch videoSource {
             case .backCamera:
-                PlayerView(isPresented: $videoSource.exists, videoSource: .camera(position: .back, focusMode: .continuousAutoFocus, sessionPreset: .hd1280x720, videoSettings: [:]))
+                PlayerView(isPresented: $videoSource.exists, videoSource: Camera(position: .back, focusMode: .continuousAutoFocus, sessionPreset: .hd1280x720, videoSettings: [:]))
             case .frontCamera:
-                PlayerView(isPresented: $videoSource.exists, videoSource: .camera(position: .front, focusMode: .none, sessionPreset: .vga640x480, videoSettings: [:]))
+                PlayerView(isPresented: $videoSource.exists, videoSource: Camera(position: .front, focusMode: .none, sessionPreset: .vga640x480, videoSettings: [:]))
             case .video:
-                PlayerView(isPresented: $videoSource.exists, videoSource: .video(path: Bundle.main.path(forResource: "Video", ofType: "mov")!))
+                PlayerView(isPresented: $videoSource.exists, videoSource: Video(path: Bundle.main.path(forResource: "Video", ofType: "mov")!))
             }
         }
+    }
+    
+    enum VideoSource: Hashable, Identifiable {
+        case backCamera
+        case frontCamera
+        case video
+        var id: Self { self }
     }
 }
 
@@ -37,25 +44,18 @@ extension Optional {
     }
 }
 
-enum VideoSource: Hashable, Identifiable {
-    case backCamera
-    case frontCamera
-    case video
-    var id: Self { self }
-}
-
-struct PlayerView: View {
+struct PlayerView<VideoSource: VideoSourceProtocol>: View {
     @Binding var isPresented: Bool
     
-    let player: Player
+    let player: VideoSource.Player
 
     @State private var image: UIImage?
     @State private var frameIndex: Int?
     @State private var time: TimeInterval?
     
-    init(isPresented: Binding<Bool>, videoSource: Player.VideoSource) {
+    init(isPresented: Binding<Bool>, videoSource: VideoSource) {
         self._isPresented = isPresented
-        self.player = try! Player(videoSource: videoSource)
+        self.player = try! videoSource.player()
     }
     
     var body: some View {
