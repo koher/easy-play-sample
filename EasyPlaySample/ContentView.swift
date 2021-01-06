@@ -3,33 +3,33 @@ import EasyPlay
 import VideoToolbox
 
 struct ContentView: View {
-    @State var videoSource: VideoSource?
+    @State var videoSourceType: VideoSourceType?
     
     var body: some View {
         VStack(spacing: 24) {
             Button("Back Camera") {
-                videoSource = .backCamera
+                videoSourceType = .backCamera
             }
             Button("Front Camera") {
-                videoSource = .frontCamera
+                videoSourceType = .frontCamera
             }
             Button("Video") {
-                videoSource = .video
+                videoSourceType = .video
             }
         }
-        .fullScreenCover(item: $videoSource) { videoSource in
+        .fullScreenCover(item: $videoSourceType) { videoSource in
             switch videoSource {
             case .backCamera:
-                PlayerView(isPresented: $videoSource.exists, videoSource: Camera(position: .back, focusMode: .continuousAutoFocus, sessionPreset: .hd1280x720, videoSettings: [:]))
+                PlayerView(isPresented: $videoSourceType.exists, videoSource: Camera(position: .back, focusMode: .continuousAutoFocus, sessionPreset: .hd1280x720, videoSettings: [:]))
             case .frontCamera:
-                PlayerView(isPresented: $videoSource.exists, videoSource: Camera(position: .front, focusMode: .none, sessionPreset: .vga640x480, videoSettings: [:]))
+                PlayerView(isPresented: $videoSourceType.exists, videoSource: Camera(position: .front, focusMode: .none, sessionPreset: .vga640x480, videoSettings: [:]))
             case .video:
-                PlayerView(isPresented: $videoSource.exists, videoSource: Video(path: Bundle.main.path(forResource: "Video", ofType: "mov")!))
+                PlayerView(isPresented: $videoSourceType.exists, videoSource: Video(path: Bundle.main.path(forResource: "Video", ofType: "mov")!))
             }
         }
     }
     
-    enum VideoSource: Hashable, Identifiable {
+    enum VideoSourceType: Hashable, Identifiable {
         case backCamera
         case frontCamera
         case video
