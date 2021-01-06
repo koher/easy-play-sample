@@ -44,7 +44,7 @@ extension Optional {
     }
 }
 
-struct PlayerView<VideoSource: VideoSourceProtocol>: View {
+struct PlayerView<VideoSource: EasyPlay.VideoSource>: View {
     @Binding var isPresented: Bool
     
     let player: VideoSource.Player
