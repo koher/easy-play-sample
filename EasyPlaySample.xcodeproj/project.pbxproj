@@ -596,8 +596,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/koher/easy-play.git";
 			requirement = {
-				branch = dev;
-				kind = branch;
+				kind = upToNextMinorVersion;
+				minimumVersion = "0.1.0-beta";
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
